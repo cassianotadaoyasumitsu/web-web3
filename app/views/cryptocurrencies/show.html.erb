@@ -1,0 +1,102 @@
+<%# app/views/cryptocurrencies/show.html.erb %>
+<div class="container mx-auto px-4 py-8">
+    <div class="mb-6">
+        <%= link_to cryptocurrencies_path, class: "text-blue-600 hover:text-blue-800" do %>
+        ← Back to Market
+        <% end %>
+    </div>
+
+    <% if flash[:error].present? %>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
+        <%= flash[:error] %>
+    </div>
+    <% end %>
+
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <div class="flex items-center space-x-4 mb-6">
+            <%= image_tag @cryptocurrency.image, class: "w-16 h-16", alt: @cryptocurrency.name %>
+            <div>
+                <h1 class="text-3xl font-bold"><%= @cryptocurrency.name %></h1>
+                <p class="text-gray-500 text-xl"><%= @cryptocurrency.symbol.upcase %></p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="text-lg font-semibold mb-2">Price Information</h3>
+                <dl class="space-y-2">
+                    <div class="flex justify-between">
+                        <dt class="text-gray-600">Current Price</dt>
+                        <dd class="font-medium">$<%= number_with_precision(@cryptocurrency.current_price, precision: 2, delimiter: ',') %></dd>
+                    </div>
+                    <div class="flex justify-between">
+                        <dt class="text-gray-600">24h Change</dt>
+                        <dd class="<%= @cryptocurrency.price_change_percentage_24h.to_f >= 0 ? 'text-green-600' : 'text-red-600' %>">
+                            <%= number_with_precision(@cryptocurrency.price_change_percentage_24h, precision: 2) %>%
+                        </dd>
+                    </div>
+                    <div class="flex justify-between">
+                        <dt class="text-gray-600">Market Cap</dt>
+                        <dd class="font-medium">$<%= number_with_precision(@cryptocurrency.market_cap, precision: 0, delimiter: ',') %></dd>
+                    </div>
+                    <div class="flex justify-between">
+                        <dt class="text-gray-600">Market Cap Rank</dt>
+                        <dd class="font-medium">#<%= @cryptocurrency.market_cap_rank %></dd>
+                    </div>
+                </dl>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="text-lg font-semibold mb-2">Volume & Supply</h3>
+                <dl class="space-y-2">
+                    <div class="flex justify-between">
+                        <dt class="text-gray-600">24h Volume</dt>
+                        <dd class="font-medium">$<%= number_with_precision(@cryptocurrency.total_volume, precision: 0, delimiter: ',') %></dd>
+                    </div>
+                    <div class="flex justify-between">
+                        <dt class="text-gray-600">Circulating Supply</dt>
+                        <dd class="font-medium"><%= number_with_precision(@cryptocurrency.circulating_supply, precision: 0, delimiter: ',') %></dd>
+                    </div>
+                    <div class="flex justify-between">
+                        <dt class="text-gray-600">Total Supply</dt>
+                        <dd class="font-medium"><%= number_with_precision(@cryptocurrency.total_supply, precision: 0, delimiter: ',') %></dd>
+                    </div>
+                    <div class="flex justify-between">
+                        <dt class="text-gray-600">Max Supply</dt>
+                        <dd class="font-medium"><%= @cryptocurrency.max_supply ? number_with_precision(@cryptocurrency.max_supply, precision: 0, delimiter: ',') : '∞' %></dd>
+                    </div>
+                </dl>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="text-lg font-semibold mb-2">Price History</h3>
+                <dl class="space-y-2">
+                    <div class="flex justify-between">
+                        <dt class="text-gray-600">All Time High</dt>
+                        <dd class="font-medium">$<%= number_with_precision(@cryptocurrency.ath, precision: 2, delimiter: ',') %></dd>
+                    </div>
+                    <div class="flex justify-between">
+                        <dt class="text-gray-600">ATH Change</dt>
+                        <dd class="<%= @cryptocurrency.ath_change_percentage.to_f >= 0 ? 'text-green-600' : 'text-red-600' %>">
+                            <%= number_with_precision(@cryptocurrency.ath_change_percentage, precision: 2) %>%
+                        </dd>
+                    </div>
+                    <div class="flex justify-between">
+                        <dt class="text-gray-600">All Time Low</dt>
+                        <dd class="font-medium">$<%= number_with_precision(@cryptocurrency.atl, precision: 2, delimiter: ',') %></dd>
+                    </div>
+                    <div class="flex justify-between">
+                        <dt class="text-gray-600">ATL Change</dt>
+                        <dd class="<%= @cryptocurrency.atl_change_percentage.to_f >= 0 ? 'text-green-600' : 'text-red-600' %>">
+                            <%= number_with_precision(@cryptocurrency.atl_change_percentage, precision: 2) %>%
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+
+        <div class="mt-6 text-sm text-gray-500">
+            Last updated: <%= @cryptocurrency.last_updated %>
+        </div>
+    </div>
+</div>
